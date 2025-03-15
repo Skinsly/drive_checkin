@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: 更改交换空间并link构建空间
@@ -49,7 +49,6 @@ jobs:
 
       - name: 执行
         run: |
-          mkdir -p .token
           npm install >/dev/null 2>&1
           npm start
 
