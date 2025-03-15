@@ -21,7 +21,7 @@ const doTask = async (cloudClient) => {
   let signPromises1 = [];
   let getSpace = [`${firstSpace}签到个人云获得(M)`];
 
-  if (process.env.PRIVATE_ONLY_FIRST != true || i == 1) {
+  if (process.env.PRIVATE_ONLY_FIRST != "true" || i == 1) {
     for (let m = 0; m < private_threadx; m++) {
       signPromises1.push(
         (async () => {
@@ -34,11 +34,11 @@ const doTask = async (cloudClient) => {
         })()
       );
     }
+    //超时中断
+    await Promise.race([Promise.all(signPromises1), sleep(timeout)]);
+    if (getSpace.length == 1) getSpace.push(" 0");
+    result.push(getSpace.join(""));
   }
-  //超时中断
-  await Promise.race([Promise.all(signPromises1), sleep(timeout)]);
-  if (getSpace.length == 1) getSpace.push(" 0");
-  result.push(getSpace.join(""));
 
   signPromises1 = [];
   getSpace = [`${firstSpace}获得(M)`];
@@ -179,6 +179,25 @@ const main = async () => {
     const capacityChange = familyCapacitySize2 - familyCapacitySize;
     logger.log(
       `主账号${userNameInfo} 家庭容量+ ${capacityChange / 1024 / 1024}M`
+    );
+
+    cloudClient = cloudClientMap.get(firstUserName);
+    let {
+      cloudCapacityInfo: cloudCapacityInfo2,
+      familyCapacityInfo: familyCapacityInfo2,
+    } = await cloudClient.getUserSizeInfo();
+    logger.log(
+      `个人总容量：${(
+        cloudCapacityInfo2.totalSize /
+        1024 /
+        1024 /
+        1024
+      ).toFixed(2)}G, 家庭总容量：${(
+        familyCapacityInfo2.totalSize /
+        1024 /
+        1024 /
+        1024
+      ).toFixed(2)}G`
     );
     logger.log("");
   }
