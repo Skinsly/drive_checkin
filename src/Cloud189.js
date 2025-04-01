@@ -47,7 +47,7 @@ const doTask = async (cloudClient) => {
     const family = familyInfoResp.find((f) => f.familyId == FAMILY_ID);
     if (!family) return result;
     result.push(`${firstSpace}开始签到家庭云 ID: ${family.familyId}`);
-    for (let i = 0; i < process.env.FAMILY_THREADX; i++) {
+    for (let i = 0; i < 1; i++) {
       signPromises1.push(
         (async () => {
           try {
@@ -94,7 +94,7 @@ function ensureDirectoryExists(dirPath) {
 }
 
 // 使用示例
-const folderPath = path.join(__dirname, "../.token");
+const folderPath = path.join(process.cwd(), ".token");
 ensureDirectoryExists(folderPath);
 
 const main = async () => {
@@ -112,7 +112,7 @@ const main = async () => {
       userNameInfo = mask(userName, 3, 7);
       let token = new FileTokenStore(`.token/${userName}.json`);
       try {
-        await sleep(2000)
+        await sleep(2000);
         cloudClient = new CloudClient({
           username: userName,
           password,
