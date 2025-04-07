@@ -28,7 +28,7 @@ const pushTelegramBot = (title, desp) => {
     }
   })
   .catch((err) => {
-    logger.error(`TelegramBot推送失败:${JSON.stringify(err)}`);
+    logger.error(`TelegramBot推送失败:${err}`);
   });
 };
 

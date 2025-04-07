@@ -27,7 +27,7 @@ const doTask = async (cloudClient) => {
         (async () => {
           try {
             const res1 = await cloudClient.userSign();
-            if (!res1.isSign) {
+            if (!res1.isSign && res1.netdiskBonus) {
               getSpace.push(` ${res1.netdiskBonus}`);
             }
           } catch (e) {}
@@ -112,7 +112,7 @@ const main = async () => {
       userNameInfo = mask(userName, 3, 7);
       let token = new FileTokenStore(`.token/${userName}.json`);
       try {
-        await sleep(2000);
+        await sleep(800);
         cloudClient = new CloudClient({
           username: userName,
           password,
@@ -184,7 +184,14 @@ const main = async () => {
     logger.log(
       `主账号${userNameInfo} 家庭容量+ ${capacityChange / 1024 / 1024}M`
     );
-
+    logger.log(
+      `使用号：${((accounts.length - 1) / 2).toFixed(0)}      号均：${(
+        capacityChange /
+        1024 /
+        1024 /
+        (accounts.length - 1 / 2).toFixed(0)
+      ).toFixed(2)}M`
+    );
     cloudClient = cloudClientMap.get(firstUserName);
     let {
       cloudCapacityInfo: cloudCapacityInfo2,
