@@ -115,7 +115,7 @@ const main = async () => {
 
     cloudClientMap.set(userName, cloudClient);
     try {
-      logger.log(`${(i - 1) / 2 + 1}.账户 ${userNameInfo} 开始执行`);
+      logger.log(`${i / 2 + 1}.账户 ${userNameInfo} 开始执行`);
 
       let {
         cloudCapacityInfo: cloudCapacityInfo0,
